@@ -5,7 +5,7 @@ describe Dogcatcher::Notice do
   let(:program) { nil }
   let(:bc) { double('BacktraceCleaner') }
   let(:bline) { "/usr/local/rvm/gems/ruby-2.2.1/gems/foo-1.2.3/lib/rake/task.rb:240:in `call'" }
-  let(:config) { double('Config', backtrace_cleaner: bc, gem_tags: gem_tags, program: program) }
+  let(:config) { double('Config', backtrace_cleaner: bc, gem_tags: gem_tags, program: program, custom_tags: ['custom-example']) }
   let(:exception) { double('Error', backtrace: [bline], message: 'bar') }
 
   subject { described_class.new(config, exception) }
@@ -54,6 +54,10 @@ describe Dogcatcher::Notice do
 
     it 'returns a ruby_version tag' do
       expect(subject.tags).to include("ruby_version:#{RUBY_VERSION}")
+    end
+
+    it 'returns custom tags' do
+      expect(subject.tags).to include('custom-example')
     end
 
     context 'when program name is not set' do

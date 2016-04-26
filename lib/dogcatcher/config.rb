@@ -34,11 +34,15 @@ module Dogcatcher
     # By default it does no cleaning.
     attr_accessor :backtrace_cleaner
 
+    # Custom tags to send with exception events
+    attr_accessor :custom_tags
+
     def initialize
       @statsd_host = '127.0.0.1'
       @statsd_port = 8125
       @gem_tags = true
       @backtrace_cleaner = ActiveSupport::BacktraceCleaner.new
+      @custom_tags = []
     end
 
     # Adds a backtrace filter. The given line in the backtrace will be replaced

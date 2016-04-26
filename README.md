@@ -116,6 +116,15 @@ Dogcatcher.configure do |c|
 end
 ```
 
+Custom tags can be sent with exception events by adding them to the config.
+
+```ruby
+Dogcatcher.configure do |c|
+  c.custom_tags = ['key1:value1']
+  c.custom_tags << 'key2:value2'
+end
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/zl4bv/dogcatcher.
