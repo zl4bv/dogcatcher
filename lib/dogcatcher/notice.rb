@@ -40,6 +40,7 @@ module Dogcatcher
       arr << "notifier:#{notifier}"
       arr << "action:#{action}"
       arr << "exception_class:#{exception.class}"
+      arr << "program:#{@config.program}" if @config.program
       arr << gem_tags if @config.gem_tags
       arr.flatten
     end

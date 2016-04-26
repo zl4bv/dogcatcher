@@ -37,9 +37,33 @@ describe Dogcatcher::Notice do
     end
 
     it 'returns an array of tags' do
+      expect(subject.tags).to be_an(Array)
+    end
+
+    it 'returns a notifier tag' do
       expect(subject.tags).to include('notifier:one')
+    end
+
+    it 'returns an action tag' do
       expect(subject.tags).to include('action:two')
+    end
+
+    it 'returns an exception class tag' do
       expect(subject.tags).to include('exception_class:RSpec::Mocks::Double')
+    end
+
+    context 'when program name is not set' do
+      it 'does not return a program tag' do
+        expect(subject.tags).to_not include('program:')
+      end
+    end
+
+    context 'when program name is set' do
+      let(:program) { 'progname' }
+
+      it 'returns a program tag' do
+        expect(subject.tags).to include('program:progname')
+      end
     end
 
     context 'when gem_tags is true' do
