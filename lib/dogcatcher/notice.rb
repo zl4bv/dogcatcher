@@ -61,7 +61,7 @@ module Dogcatcher
     # @return [Array<String>]
     def gem_tags
       exception.backtrace.map do |line|
-        match = line.scan(%r{gems/([A-Za-z\-_]+)-([0-9.]+(\.[a-z]+(\.[0-9]+)?)?)/})
+        match = line.scan(%r{gems/[A-Za-z0-9\-_.]+/gems/([A-Za-z\-_]+)-([0-9.]+(\.[a-z]+(\.[0-9]+)?)?)/})
         match.empty? ? nil : match.flatten.compact.join(':')
       end.compact
     end

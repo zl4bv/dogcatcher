@@ -4,14 +4,15 @@ describe Dogcatcher::Notice do
   let(:gem_tags) { false }
   let(:program) { nil }
   let(:bc) { double('BacktraceCleaner') }
+  let(:bline) { "/usr/local/rvm/gems/ruby-2.2.1/gems/foo-1.2.3/lib/rake/task.rb:240:in `call'" }
   let(:config) { double('Config', backtrace_cleaner: bc, gem_tags: gem_tags, program: program) }
-  let(:exception) { double('Error', backtrace: ['gems/foo-1.2.3/'], message: 'bar') }
+  let(:exception) { double('Error', backtrace: [bline], message: 'bar') }
 
   subject { described_class.new(config, exception) }
 
   describe '#message' do
     before do
-      allow(bc).to receive(:clean).with(['gems/foo-1.2.3/']).and_return(['gems/foo-1.2.3/'])
+      allow(bc).to receive(:clean).with([bline]).and_return([bline])
     end
 
     it 'contains the cleaned backtrace' do
