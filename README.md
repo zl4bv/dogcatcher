@@ -37,6 +37,7 @@ begin
   fail ArgumentError, 'Example error'
 rescue ArgumentError => exception
   Dogcatcher.notify(exception)
+  raise exception
 end
 ```
 
