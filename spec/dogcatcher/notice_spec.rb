@@ -52,6 +52,10 @@ describe Dogcatcher::Notice do
       expect(subject.tags).to include('exception_class:RSpec::Mocks::Double')
     end
 
+    it 'returns a ruby_version tag' do
+      expect(subject.tags).to include("ruby_version:#{RUBY_VERSION}")
+    end
+
     context 'when program name is not set' do
       it 'does not return a program tag' do
         expect(subject.tags).to_not include('program:')

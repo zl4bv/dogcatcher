@@ -41,6 +41,7 @@ module Dogcatcher
       arr << "action:#{action}"
       arr << "exception_class:#{exception.class}"
       arr << "program:#{@config.program}" if @config.program
+      arr << "ruby_version:#{RUBY_VERSION}"
       arr << gem_tags if @config.gem_tags
       arr.flatten
     end
