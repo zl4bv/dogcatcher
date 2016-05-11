@@ -1,5 +1,7 @@
 module Dogcatcher
   class Notice
+    MAX_MESSAGE_SIZE = 4000
+
     # Name of the source that caught the exception
     attr_accessor :notifier
 
@@ -27,7 +29,8 @@ module Dogcatcher
       backtrace = @config.backtrace_cleaner.clean(exception.backtrace)
       markdown = Markdown.new
       metadata.each { |key, value| markdown.bullet("#{key}: #{value}") }
-      markdown.code_block(backtrace.join("\n"))
+      max_block_size = MAX_MESSAGE_SIZE - markdown.result.length - 10
+      markdown.code_block(backtrace.join("\n"), 'text', max_block_size)
       markdown.result
     end
 

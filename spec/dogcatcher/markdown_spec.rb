@@ -22,6 +22,36 @@ describe Dogcatcher::Markdown do
         expect(subject.result).to eq("%%%\n```bar\nfoo\n```\n\n%%%")
       end
     end
+
+    context 'when max length not given' do
+      it 'does not truncate the string' do
+        subject.code_block('foobar')
+        expect(subject.result).to match(/foobar/)
+      end
+    end
+
+    context 'when max length is a negative number' do
+      it 'does not truncate the string' do
+        subject.code_block('foobar', nil, -123)
+        expect(subject.result).to match(/foobar/)
+      end
+    end
+
+    context 'when max length is a positive number' do
+      context 'when str is less than max length' do
+        it 'returns the whole string' do
+          subject.code_block('foobar', nil, 100)
+          expect(subject.result).to match(/foobar/)
+        end
+      end
+
+      context 'when str is greater than max length' do
+        it 'truncates the string' do
+          subject.code_block('foobar', nil, 12)
+          expect(subject.result).to match(/foo\n/)
+        end
+      end
+    end
   end
 
   describe '#result' do
