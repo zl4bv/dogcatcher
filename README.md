@@ -86,6 +86,15 @@ Dogcatcher.configure do |c|
 end
 ```
 
+Metrics will be sent with a default name of `dogcatcher.errors.count`, this can
+be customized by setting the `metric_name` configurable.
+
+```ruby
+Dogcatcher.configure do |c|
+  c.metric_name = 'my_app.errors.count'
+end
+```
+
 The host and port that statsd data is sent to can be configured like so.
 
 ```ruby
