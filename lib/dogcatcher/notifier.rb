@@ -10,29 +10,51 @@ module Dogcatcher
     #
     # @param [Dogcatcher::Notice]
     def notify(notice)
-      notify_dogapi(notice) if @config.use_dogapi?
-      notify_statsd(notice) if @config.use_statsd?
+      if @config.use_dogapi?
+        notify_dogapi_event(notice) if @config.send_event
+        notify_dogapi_metric(notice) if @config.send_metric
+      end
+      if @config.use_statsd?
+        notify_statsd_event(notice) if @config.send_event
+        notify_statsd_metric(notice) if @config.send_metric
+      end
     end
 
     private
 
+    def dogapi_client
+      @dogapi_client ||= Dogapi::Client.new(@config.api_key)
+    end
+
+    def statsd_client
+      @statsd_client = Statsd.new(@config.statsd_host, @config.statsd_port)
+    end
+
     # @param [Dogcatcher::Notice]
-    def notify_dogapi(notice)
+    def notify_dogapi_event(notice)
       event = Dogapi::Event.new(notice.message,
                                 msg_title: notice.title,
                                 tags: notice.tags,
                                 alert_type: 'error')
-
-      Dogapi::Client.new(@config.api_key).emit_event(event)
+      dogapi_client.emit_event(event)
     end
 
     # @param [Dogcatcher::Notice]
-    def notify_statsd(notice)
-      client = Statsd.new(@config.statsd_host, @config.statsd_port)
-      client.event(notice.title,
-                   notice.message,
-                   tags: notice.tags,
-                   alert_type: 'error')
+    def notify_dogapi_metric(notice)
+      dogapi_client.emit_point(@config.metric_name, 1, tags: notice.tags)
+    end
+
+    # @param [Dogcatcher::Notice]
+    def notify_statsd_event(notice)
+      statsd_client.event(notice.title,
+                          notice.message,
+                          tags: notice.tags,
+                          alert_type: 'error')
+    end
+
+    # @param [Dogcatcher::Notice]
+    def notify_statsd_metric(notice)
+      statsd_client.count(@config.metric_name, 1, tags: notice.tags)
     end
   end
 end

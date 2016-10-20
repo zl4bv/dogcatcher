@@ -23,6 +23,14 @@ module Dogcatcher
     attr_accessor :use_dogapi
     attr_accessor :use_statsd
 
+    # When true, a metric will be sent via the enabled method.
+    attr_accessor :send_metric
+    # When true, an event will be sent via the enabled method.
+    attr_accessor :send_event
+
+    # Name of the metric that will be sent
+    attr_accessor :metric_name
+
     # When enabled it will add tags for each +gem_name:version+ found in the
     # backtrace.
     #
@@ -37,12 +45,17 @@ module Dogcatcher
     # Custom tags to send with exception events
     attr_accessor :custom_tags
 
+    DEFAULT_METRIC_NAME = 'dogcatcher.errors.count'
+
     def initialize
       @statsd_host = '127.0.0.1'
       @statsd_port = 8125
       @gem_tags = true
       @backtrace_cleaner = ActiveSupport::BacktraceCleaner.new
       @custom_tags = []
+      @send_metric = true
+      @send_event = true
+      @metric_name = DEFAULT_METRIC_NAME
     end
 
     # Adds a backtrace filter. The given line in the backtrace will be replaced
