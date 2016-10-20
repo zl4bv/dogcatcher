@@ -56,9 +56,9 @@ end
 
 ## Configuration
 
-By default Dogcatcher will send events to statsd running on the local host. By
-specifying a Datadog API key, Dogcatcher will switch to sending events to the
-Datadog API instead.
+By default Dogcatcher will send metric and event data to statsd running on the
+local host. By specifying a Datadog API key, Dogcatcher will switch to sending
+events to the Datadog API instead.
 
 ```ruby
 Dogcatcher.configure do |c|
@@ -66,8 +66,8 @@ Dogcatcher.configure do |c|
 end
 ```
 
-Since the default approach is to send events to one or the other, options are
-available to explicitly control where the events are sent.
+Since the default approach is to send data to one or the other, options are
+available to explicitly control where the data is sent.
 
 ```ruby
 Dogcatcher.configure do |c|
@@ -76,7 +76,26 @@ Dogcatcher.configure do |c|
 end
 ```
 
-The host and port that statsd events are sent to can be configured like so.
+By default Dogcatcher will send both metrics and events, but these can be
+disabled individually.
+
+```ruby
+Dogcatcher.configure do |c|
+  c.send_metric = false
+  c.send_event = false
+end
+```
+
+Metrics will be sent with a default name of `dogcatcher.errors.count`, this can
+be customized by setting the `metric_name` configurable.
+
+```ruby
+Dogcatcher.configure do |c|
+  c.metric_name = 'my_app.errors.count'
+end
+```
+
+The host and port that statsd data is sent to can be configured like so.
 
 ```ruby
 Dogcatcher.configure do |c|
@@ -86,7 +105,7 @@ end
 ```
 
 An optional program name can be specified to help distinguish between multiple
-applications. This will appear in the event title.
+applications. This will appear in the event title and as a tag on the metric.
 
 ```ruby
 Dogcatcher.configure do |c|
@@ -116,7 +135,7 @@ Dogcatcher.configure do |c|
 end
 ```
 
-Custom tags can be sent with exception events by adding them to the config.
+Custom tags can be sent with exception data by adding them to the config.
 
 ```ruby
 Dogcatcher.configure do |c|
