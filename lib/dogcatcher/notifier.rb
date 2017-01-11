@@ -22,7 +22,7 @@ module Dogcatcher
 
     private
 
-    def dogapi_clientl
+    def dogapi_client
       @dogapi_client ||= Dogapi::Client.new(@config.api_key)
     end
 
