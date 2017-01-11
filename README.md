@@ -141,6 +141,9 @@ Custom tags can be sent with exception data by adding them to the config.
 Dogcatcher.configure do |c|
   c.custom_tags = ['key1:value1']
   c.custom_tags << 'key2:value2'
+
+  # Proc will be evaluated when exception is caught
+  c.custom_tags << proc { 'key3:value3' }
 end
 ```
 

@@ -39,15 +39,15 @@ module Dogcatcher
     #
     # @return [Array<String>]
     def tags
-      arr = []
-      arr << "notifier:#{notifier}"
-      arr << "action:#{action}"
-      arr << "exception_class:#{exception.class}"
-      arr << "program:#{@config.program}" if @config.program
-      arr << "ruby_version:#{RUBY_VERSION}"
-      arr << gem_tags if @config.gem_tags
-      arr.push(*@config.custom_tags)
-      arr.flatten.uniq
+      tagset = Dogcatcher::TagSet.new
+      tagset << "notifier:#{notifier}"
+      tagset << "action:#{action}"
+      tagset << "exception_class:#{exception.class}"
+      tagset << "program:#{@config.program}" if @config.program
+      tagset << "ruby_version:#{RUBY_VERSION}"
+      tagset.merge(gem_tags) if @config.gem_tags
+      tagset.merge(@config.custom_tags)
+      tagset.compile.to_a
     end
 
     # Title of the event/notice.
