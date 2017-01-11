@@ -47,7 +47,7 @@ module Dogcatcher
       arr << "ruby_version:#{RUBY_VERSION}"
       arr << gem_tags if @config.gem_tags
       arr.push(*@config.custom_tags)
-      arr.flatten
+      arr.flatten.uniq
     end
 
     # Title of the event/notice.
