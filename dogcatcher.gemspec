@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec'
 
-  spec.add_runtime_dependency 'activesupport', '~> 4'
+  spec.add_runtime_dependency 'activesupport', '>= 4', '< 6'
   spec.add_runtime_dependency 'dogapi', '~> 1.22'
   spec.add_runtime_dependency 'dogstatsd-ruby', '~> 1.6'
 end
