@@ -7,6 +7,7 @@ require 'dogcatcher/config'
 require 'dogcatcher/markdown'
 require 'dogcatcher/notice'
 require 'dogcatcher/notifier'
+require 'dogcatcher/tag_set'
 require 'dogcatcher/version'
 
 module Dogcatcher

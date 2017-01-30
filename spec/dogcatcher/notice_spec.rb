@@ -87,6 +87,23 @@ describe Dogcatcher::Notice do
         expect(subject.tags).to_not include('foo:1.2.3')
       end
     end
+
+    context 'when duplicate tags are added' do
+      let(:config) { double('Config', backtrace_cleaner: bc, gem_tags: gem_tags, program: program, custom_tags: %w(a a a a a)) }
+
+      it 'returns deduplicated tags' do
+        expect(subject.tags.count { |tag| tag == 'a' }).to eq(1)
+      end
+    end
+
+    context 'when a tag that is a proc is added' do
+      let(:config) { double('Config', backtrace_cleaner: bc, gem_tags: gem_tags, program: program, custom_tags: [proc { 'a' }]) }
+
+      it 'returns compiled tags' do
+        expect(subject.tags.count { |tag| tag.is_a?(Proc) }).to eq(0)
+        expect(subject.tags.count { |tag| tag == 'a' }).to eq(1)
+      end
+    end
   end
 
   describe '#title' do
