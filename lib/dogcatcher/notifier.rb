@@ -41,7 +41,7 @@ module Dogcatcher
 
     # @param [Dogcatcher::Notice]
     def notify_dogapi_metric(notice)
-      dogapi_client.emit_point(@config.metric_name, 1, tags: notice.tags)
+      dogapi_client.emit_point(@config.metric_name, 1, tags: notice.tags, type: 'counter' )
     end
 
     # @param [Dogcatcher::Notice]
